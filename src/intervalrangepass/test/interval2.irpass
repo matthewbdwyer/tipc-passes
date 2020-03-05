@@ -1,0 +1,10 @@
+*** interval range analysis for function 
+define i64 @_tip_main() {
+entry:
+  %addtmp = add i64 42, 2
+  %addtmp4 = add i64 42, %addtmp
+  ret i64 %addtmp4
+}
+ ***
+  %addtmp = add i64 42, 2 = [44,44]
+  %addtmp4 = add i64 42, %addtmp = [86,86]

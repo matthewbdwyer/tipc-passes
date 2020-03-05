@@ -1,0 +1,5 @@
+Implement basic interval analysis
+
+Implement some form of widening
+
+Implement path-sensitivity through intrinsics for branch outcomes

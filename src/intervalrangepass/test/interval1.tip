@@ -1,0 +1,11 @@
+main() {
+  var x, y, z;
+  x = 2;	// x = [42,42]
+  if (input) 
+    z = x;	// z = [42,42]
+  else {
+    z = 4;	// z = [4,4]
+  }
+  return z;	// z = [4,42]
+}
+
