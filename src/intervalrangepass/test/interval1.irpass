@@ -12,12 +12,12 @@ else1:                                            ; preds = %entry
   br label %ifmerge1
 
 ifmerge1:                                         ; preds = %else1, %then1
-  %z.0 = phi i64 [ 2, %then1 ], [ 4, %else1 ]
+  %z.0 = phi i64 [ 42, %then1 ], [ 4, %else1 ]
   call void @llvm.donothing()
   ret i64 %z.0
 }
  ***
   %ifcond = icmp ne i64 %0, 0 = [0,1]
   %0 = call i64 @_tip_input() = [-inf,+inf]
-  %z.0 = phi i64 [ 2, %then1 ], [ 4, %else1 ] = [2,4]
+  %z.0 = phi i64 [ 42, %then1 ], [ 4, %else1 ] = [4,42]
   call void @llvm.donothing() = [-inf,+inf]
