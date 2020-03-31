@@ -43,10 +43,10 @@ This project uses CMake to manage the build process.  There are a set of `CMakeL
 You need to create a `build` directory within which you will build the passes.  To get started you should create that, empty, build directory if it doesn't exist.  Follow these steps:
   1. `mkdir build`
   2. `cd build`
-  3. `cmake ../src`
+  3. `cmake ..`
   4. `make`
 
-During development you need only run steps 1 and 2 a single time, unless you modify the CmakeLists.txt file.  Just run make in the build directory to rebuild after making changes to your tool source.
+During development you need only run steps 1 and 2 a single time, unless you modify the CmakeLists.txt file.  Just run make in the build directory to rebuild after making changes to your tool source.  If you run into trouble with `cmake` then you can delete the file `build/CMakeCache.txt` and rerun the `cmake` command.
 
 This will create a set a subdirectory for each pass in the `build` directory.
 
