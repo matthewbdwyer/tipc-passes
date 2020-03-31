@@ -1,11 +1,5 @@
-#include <iostream>
 #include <set>
-
-#include "llvm/Support/raw_ostream.h"
-
 #include "Interval.h"
-
-using namespace llvm;
 
 using namespace interval;
 
