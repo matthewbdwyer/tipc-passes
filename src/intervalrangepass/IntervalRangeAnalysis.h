@@ -1,7 +1,7 @@
 #pragma once
 
 #include "llvm/ADT/DenseMap.h"
-#include "llvm/IR/CallSite.h"
+#include "llvm/IR/Instructions.h"
 #include "llvm/IR/Function.h"
 #include "llvm/Pass.h"
 #include "llvm/Support/raw_ostream.h"

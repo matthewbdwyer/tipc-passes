@@ -31,10 +31,15 @@ The pass is not intended to reflect the architecture, coding style, or efficienc
 Rather the intention is to very clearly express how the analysis functions as relates to the above issues.
 
 ## Dependencies
-These passes were developed and tested on Ubuntu 18.04 LTS using `llvm-9`. 
-To install the necessary packages on ubuntu run:
+These passes were developed and tested on Mac OS X and Ubuntu 20.04 LTS using `llvm 11`;  older versions of llvm can be used with some slight modifications.  To install the necessary packages on ubuntu run:
 
-`apt install libllvm-9-ocaml-dev libllvm9 llvm-9 llvm-9-dev llvm-9-doc llvm-9-examples llvm-9-runtime llvm-9-tools libclang-common-9-dev`
+`apt install libllvm-11-ocaml-dev libllvm11 llvm-11 llvm-11-dev llvm-11-doc llvm-11-examples llvm-11-runtime llvm-11-tools libclang-common-11-dev`
+
+To install them on a mac run:
+
+`brew install llvm@11`
+
+Once you install you may need to set up your search path so that the LLVM tools are visible.  Note that as long as `llvm-config` is visible then the following build process will find the include files and libraries.
 
 ## Building the passes
 
@@ -53,11 +58,11 @@ This will create a set a subdirectory for each pass in the `build` directory.
 ## Running a pass
 These passes all emit output on the standard error stream.
 
-To run a pass you use LLVM's `opt` tool.  Since the passes are built using llvm-9 you need to use that version of `opt` -- if it is not the default you can invoke it as `opt-9`.  You run a pass using the following command:
+To run a pass you use LLVM's `opt` tool.  You run a pass using the following command:
 
-`opt -load <pathto>/passfile.so -passname < <pathto>/file.bc >/dev/null`
+`opt -load <pathto>/passfile.suffix -passname < <pathto>/file.bc >/dev/null`
 
-where `passfile.so` is the name of the shared object (dynamic) library for the pass and `passname` is the name used to register the pass (see the declaration of the form `static RegisterPass<...> X(...)` in the source of the pass, or just look below).
+where `passfile.suffix` is the name of the shared object (dynamic) library for the pass and `passname` is the name used to register the pass (see the declaration of the form `static RegisterPass<...> X(...)` in the source of the pass, or just look below).  On a Mac the `suffix` is `dylib` and on linux it is `so`.
 
 Since `opt` writes the transformed bitcode file to output you need to either pipe the result to `/dev/null`, as above, or use the `-o <filename>` option to redirect it to a file.
 
@@ -81,7 +86,9 @@ If you want to understand what real LLVM passes look like, then have a look at L
 
 ## Tests
 
-The directory `src/intervalrangepass/test` contains a set of tests `interval*.tip` which can be run using the script `runirpass.sh`.   The script outputs a file, which are stored here as `interval*.irpass`, that record the results of running the pass.
+The directory `src/intervalrangepass/test` contains a set of tests `interval*.tip` which can be run using the script `runirpass.sh`.  This script requires that you have installed the [tipc compiler](https://github.com/matthewbdwyer/tipc) in your home directory (i.e., `~`).
+
+The script outputs a file, which are stored here as `interval*.irpass`, that record the results of running the pass.
 
 The source files are annotated with expected results, but it can be tricky to compare the source level view of the analysis results with the view in terms of the bitcode file.  This is due in part to the lowering of the program to bitcode, which makes temporary computations explicit and thereby tracked by the analysis, and by the application of optimizations associated with the `-mem2reg` pass.
 
