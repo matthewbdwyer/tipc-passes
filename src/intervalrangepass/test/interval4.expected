@@ -1,5 +1,4 @@
-*** interval range analysis for function 
-define i64 @_tip_main() {
+*** interval range analysis for function define i64 @_tip_main() {
 entry:
   %subtmp = sub i64 42, 20
   %gttmp = icmp sgt i64 %subtmp, 42
@@ -22,12 +21,12 @@ ifmerge1:                                         ; preds = %else1, %then1
   ret i64 %addtmp11
 }
  ***
-  %ifcond = icmp ne i1 %gttmp, false = [0,1]
-  %z.0 = phi i64 [ 42, %then1 ], [ %subtmp, %else1 ] = [22,42]
-  %multmp = mul i64 %divtmp, 3 = [-inf,+inf]
-  %gttmp = icmp sgt i64 %subtmp, 42 = [0,1]
-  %addtmp11 = add i64 %addtmp, %multmp = [-inf,+inf]
-  %divtmp = sdiv i64 %z.0, 2 = [-inf,+inf]
   call void @llvm.donothing() = [-inf,+inf]
   %addtmp = add i64 %z.0, %divtmp = [-inf,+inf]
+  %z.0 = phi i64 [ 42, %then1 ], [ %subtmp, %else1 ] = [22,42]
+  %gttmp = icmp sgt i64 %subtmp, 42 = [0,1]
+  %ifcond = icmp ne i1 %gttmp, false = [0,1]
+  %addtmp11 = add i64 %addtmp, %multmp = [-inf,+inf]
   %subtmp = sub i64 42, 20 = [22,22]
+  %multmp = mul i64 %divtmp, 3 = [-inf,+inf]
+  %divtmp = sdiv i64 %z.0, 2 = [-inf,+inf]

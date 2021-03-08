@@ -80,21 +80,24 @@ These are all intra-procedural `FunctionPass`es and, as such, are limited in the
   3. the interval computations are unsound with respect to computer arithmetic
   4. the interval computations for some operators are very imprecise
   5. there is no widening implemented for intervals
-These are intentional as the passes are provided just as a context for learning about LLVM, i.e., by students.
 
-If you want to understand what real LLVM passes look like, then have a look at LLVM source code.
+These are intentional as the passes are provided just as a context for learning about LLVM, i.e., by students.  If you want to understand what real LLVM passes look like, then have a look at LLVM source code.
 
 ## Tests
 
-The directory `src/intervalrangepass/test` contains a set of tests `interval*.tip` which can be run using the script `runirpass.sh`.  This script requires that you have installed the [tipc compiler](https://github.com/matthewbdwyer/tipc) in your home directory (i.e., `~`).
+The directory `src/intervalrangepass/test` contains a set of tests `interval*.tip` which can be run using the script `runirpass.sh`.  This script requires that you have installed the [tipc compiler](https://github.com/matthewbdwyer/tipc) in your home directory (i.e., `~`).  
 
-The script outputs a file, which are stored here as `interval*.irpass`, that record the results of running the pass.
+The script takes the base name of the TIP file as input and outputs a file, `interval*.irpass`, that record the results of running the pass.  You can compare the output of your pass to the expected output in `interval*.expected`.
 
-The source files are annotated with expected results, but it can be tricky to compare the source level view of the analysis results with the view in terms of the bitcode file.  This is due in part to the lowering of the program to bitcode, which makes temporary computations explicit and thereby tracked by the analysis, and by the application of optimizations associated with the `-mem2reg` pass.
+The `tipc` compiler is run with the `-do` option which disables optimizations.  Removing that flag may produce bitcode operations that are not supported by the interval analysis, in which case it will raise an LLVM unreachable exception, e.g., "Unsupported BinaryOperator".
 
-There is a debug flag that you can add to the command line, `-intervalrange-debug`, which prints information like the updating of interval values, adding user instructions to the worklist, etc.
+The source files are annotated with expected results, but it can be tricky to compare the source level view of the analysis results with the view in terms of the bitcode file.  This is due in part to the lowering of the program to bitcode, which makes temporary computations explicit and thereby tracked by the analysis, and by the application of optimizations associated with the `-mem2reg` pass.  
 
-Note that due to the limitations stated above these expected results are not computed correctly.  Also take care that if you have a loop in your example, like `interval5.tip`, the `irpass` may diverge.
+There is a debug flag that you can add to the command line, `-intervalrange-debug`, which prints information like the updating of interval values, adding user instructions to the worklist, etc.  For example, on a Mac you can run:
+
+`opt -load ~/tipc-passes/build/src/intervalrangepass/irpass.dylib -mem2reg -irpass -intervalrange-debug >/dev/null <interval1.tip.bc`
+
+Note that due to the limitations stated above these expected results are not computed correctly.  Also take care that if you have a loop in your example, like `interval5.tip`, the `irpass` may diverge.  You can fix this by implementing widening.
 
 ## Documentation
 

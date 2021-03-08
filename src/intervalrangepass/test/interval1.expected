@@ -1,0 +1,22 @@
+*** interval range analysis for function define i64 @_tip_main() {
+entry:
+  %0 = call i64 @_tip_input()
+  %ifcond = icmp ne i64 %0, 0
+  br i1 %ifcond, label %then1, label %else1
+
+then1:                                            ; preds = %entry
+  br label %ifmerge1
+
+else1:                                            ; preds = %entry
+  br label %ifmerge1
+
+ifmerge1:                                         ; preds = %else1, %then1
+  %z.0 = phi i64 [ 42, %then1 ], [ 4, %else1 ]
+  call void @llvm.donothing()
+  ret i64 %z.0
+}
+ ***
+  %ifcond = icmp ne i64 %0, 0 = [0,1]
+  %0 = call i64 @_tip_input() = [-inf,+inf]
+  %z.0 = phi i64 [ 42, %then1 ], [ 4, %else1 ] = [4,42]
+  call void @llvm.donothing() = [-inf,+inf]
