@@ -60,9 +60,11 @@ These passes all emit output on the standard error stream.
 
 To run a pass you use LLVM's `opt` tool.  You run a pass using the following command:
 
-`opt -load <pathto>/passfile.suffix -passname < <pathto>/file.bc >/dev/null`
+`opt -load <dylibpath>/passfile.suffix -passname < file.bc >/dev/null`
 
 where `passfile.suffix` is the name of the shared object (dynamic) library for the pass and `passname` is the name used to register the pass (see the declaration of the form `static RegisterPass<...> X(...)` in the source of the pass, or just look below).  On a Mac the `suffix` is `dylib` and on linux it is `so`.
+
+`<dylibpath>` depends on which pass you are running.  In this project they are built in `~/tipc-passes/build/src/PN/passfile.suffix` where `PN` is the name of the pass directory, e.g., `funvisitpass
 
 Since `opt` writes the transformed bitcode file to output you need to either pipe the result to `/dev/null`, as above, or use the `-o <filename>` option to redirect it to a file.
 
