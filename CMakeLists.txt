@@ -9,8 +9,8 @@ find_package(PkgConfig REQUIRED)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}")
 list(APPEND CMAKE_MODULE_PATH "${LLVM_DIR}")
 
-# compiler must be 11 
-set(CMAKE_CXX_STANDARD 11)
+# compiler must be 17 
+set(CMAKE_CXX_STANDARD 17)
 
 # compile with debug flags
 set(CMAKE_BUILD_TYPE Debug)
