@@ -20,9 +20,13 @@ set(CMAKE_BUILD_TYPE Debug)
 
 ######## LLVM rules for installed libraries ###########
 # We want to select the latest stable release even if others are installed
-find_package(LLVM 11 REQUIRED CONFIG)
-message(STATUS "Found LLVM ${LLVM_PACKAGE_VERSION}")
-message(STATUS "Using LLVMConfig.cmake in: ${LLVM_DIR}")
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+  find_package(LLVM 11.1.0 REQUIRED CONFIG)
+elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+  find_package(LLVM 11.1.0 REQUIRED CONFIG)
+else()
+  message(FATAL_ERROR "${CMAKE_SYSTEM_NAME} is not supported")
+endif()
 
 list(APPEND CMAKE_MODULE_PATH "${LLVM_CMAKE_DIR}")
 include(AddLLVM)
@@ -30,8 +34,7 @@ include(AddLLVM)
 message("LLVM STATUS:
   Definitions ${LLVM_DEFINITIONS}
   Includes    ${LLVM_INCLUDE_DIRS}
-  Libraries   ${LLVM_LIBRARY_DIRS}
-  Targets     ${LLVM_TARGETS_TO_BUILD}"
+  Libraries   ${LLVM_LIBRARY_DIRS}"
 )
 
 include_directories(${LLVM_INCLUDE_DIRS})

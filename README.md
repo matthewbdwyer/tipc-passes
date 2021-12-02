@@ -14,8 +14,9 @@ There are four passes in this project:
 
   1. `funvisitpass` : the simplest imaginable `FunctionPass` 
   2. `printinstpass` : a function pass that identifies and prints a subset of instructions that are relevant for TIP programs
-  3. `userspass` : an extension of `printinstpass` that prints the users of an instruction  
-  4. `intervalrangepass` : a skeletal interval range analysis pass
+  3. `instcountpass` : a function pass that prints the number instructions for each function
+  4. `userspass` : an extension of `printinstpass` that prints the users of an instruction  
+  5. `intervalrangepass` : a skeletal interval range analysis pass
 
 The first three are intended just to give a basic idea of how to write little passes so that you can experiment with getting up the LLVM pass writing learning curve.
 
@@ -68,11 +69,12 @@ where `passfile.suffix` is the name of the shared object (dynamic) library for t
 
 Since `opt` writes the transformed bitcode file to output you need to either pipe the result to `/dev/null`, as above, or use the `-o <filename>` option to redirect it to a file.
 
-There are four passes in this project:
+There are five passes in this project:
   1. `funvisitpass` : the simplest imaginable `FunctionPass`; `passname` is `fvpass` 
   2. `printinstpass` : a function pass that identifies a subset of instructions that are relevant for TIP programs; `passname` is `pipass`
-  3. `userspass` : an extension of `printinstpass` that prints the users of an instruction; `passname` is `userspass`
-  4. `intervalrangepass` : a skeletal interval range analysis pass that depends on the program being converted to SSA form, so you need to add the `-mem2reg` option to the `opt` command line; `passname` is `irpass`
+  3. `instcountpass` : a function pass that prints the number instructions for each function; `passname` is `icpass`
+  4. `userspass` : an extension of `printinstpass` that prints the users of an instruction; `passname` is `userspass`
+  5. `intervalrangepass` : a skeletal interval range analysis pass that depends on the program being converted to SSA form, so you need to add the `-mem2reg` option to the `opt` command line; `passname` is `irpass`
 
 
 ## Limitations

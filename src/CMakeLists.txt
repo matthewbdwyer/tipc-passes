@@ -1,4 +1,5 @@
 add_subdirectory(funvisitpass)
 add_subdirectory(printinstpass)
+add_subdirectory(instcountpass)
 add_subdirectory(userspass)
 add_subdirectory(intervalrangepass)
