@@ -21,9 +21,9 @@ set(CMAKE_BUILD_TYPE Debug)
 ######## LLVM rules for installed libraries ###########
 # We want to select the latest stable release even if others are installed
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
-  find_package(LLVM 11.1.0 REQUIRED CONFIG)
+  find_package(LLVM 14.0 REQUIRED CONFIG)
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
-  find_package(LLVM 11.1.0 REQUIRED CONFIG)
+  find_package(LLVM 14.0 REQUIRED CONFIG)
 else()
   message(FATAL_ERROR "${CMAKE_SYSTEM_NAME} is not supported")
 endif()

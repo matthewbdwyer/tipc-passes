@@ -32,13 +32,13 @@ The pass is not intended to reflect the architecture, coding style, or efficienc
 Rather the intention is to very clearly express how the analysis functions as relates to the above issues.
 
 ## Dependencies
-These passes were developed and tested on Mac OS X and Ubuntu 20.04 LTS using LLVM 11;  older versions of LLVM can be used with some slight modifications.  To install the necessary packages on ubuntu run:
+These passes were developed and tested on Mac OS X and Ubuntu 20.04 LTS using LLVM 14;  older versions of LLVM can be used with some slight modifications.  To install the necessary packages on ubuntu run:
 
-`apt install libllvm-11-ocaml-dev libllvm11 llvm-11 llvm-11-dev llvm-11-doc llvm-11-examples llvm-11-runtime llvm-11-tools libclang-common-11-dev`
+`apt install libllvm-14-ocaml-dev libllvm14 llvm-14 llvm-14-dev llvm-14-doc llvm-14-examples llvm-14-runtime llvm-14-tools libclang-common-14-dev`
 
 To install them on a mac run:
 
-`brew install llvm@11`
+`brew install llvm@14`
 
 Once you install you may need to set up your search path so that the LLVM tools are visible.  Note that as long as `llvm-config` is visible then the following build process will find the include files and libraries.
 
@@ -61,13 +61,15 @@ These passes all emit output on the standard error stream.
 
 To run a pass you use LLVM's `opt` tool.  You run a pass using the following command:
 
-`opt -load <dylibpath>/passfile.suffix -passname < file.bc >/dev/null`
+`opt -enable-new-pm=0 -load <dylibpath>/passfile.suffix --passname < file.bc >/dev/null`
 
 where `passfile.suffix` is the name of the shared object (dynamic) library for the pass and `passname` is the name used to register the pass (see the declaration of the form `static RegisterPass<...> X(...)` in the source of the pass, or just look below).  On a Mac the `suffix` is `dylib` and on linux it is `so`.
 
 `<dylibpath>` depends on which pass you are running.  In this project they are built in `~/tipc-passes/build/src/PN/passfile.suffix` where `PN` is the name of the pass directory, e.g., `funvisitpass
 
 Since `opt` writes the transformed bitcode file to output you need to either pipe the result to `/dev/null`, as above, or use the `-o <filename>` option to redirect it to a file.
+
+Note that these projects use the legacy pass manager, so we explicitly disable the new pass manager with the `-enable-new-pm=0` option.
 
 There are five passes in this project:
   1. `funvisitpass` : the simplest imaginable `FunctionPass`; `passname` is `fvpass` 
