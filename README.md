@@ -56,6 +56,21 @@ During development you need only run steps 1 and 2 a single time, unless you mod
 
 This will create a set a subdirectory for each pass in the `build` directory.
 
+### A Note to Apple Silicon Users
+If you are building the passes on Apple silicon hardware it is possible that
+[CMake does not properly identify][1] the target architecture as `arm64`. This
+will result in your passes being compiled for `x86_64`. Those build artifacts
+will not be linkable with the `arm` flavored `llvm` libraries Homebrew
+installed. To [force `CMake`][2] into configuring the build properly, tweak
+your build steps slightly.
+
+```bash
+mkdir build
+cd build
+cmake -DCMAKE_APPLE_SILICON_PROCESSOR=arm64 ..
+make
+```
+
 ## Running a pass
 These passes all emit output on the standard error stream.
 
@@ -65,7 +80,7 @@ To run a pass you use LLVM's `opt` tool.  You run a pass using the following com
 
 where `passfile.suffix` is the name of the shared object (dynamic) library for the pass and `passname` is the name used to register the pass (see the declaration of the form `static RegisterPass<...> X(...)` in the source of the pass, or just look below).  On a Mac the `suffix` is `dylib` and on linux it is `so`.
 
-`<dylibpath>` depends on which pass you are running.  In this project they are built in `~/tipc-passes/build/src/PN/passfile.suffix` where `PN` is the name of the pass directory, e.g., `funvisitpass
+`<dylibpath>` depends on which pass you are running.  In this project they are built in `~/tipc-passes/build/src/PN/passfile.suffix` where `PN` is the name of the pass directory, e.g., `funvisitpass`
 
 Since `opt` writes the transformed bitcode file to output you need to either pipe the result to `/dev/null`, as above, or use the `-o <filename>` option to redirect it to a file.
 
@@ -113,3 +128,8 @@ There is lots of great general advice about using LLVM available:
   * https://www.cs.cornell.edu/~asampson/blog/llvm.html
   * the [LLVM Programmer's Manual(http://llvm.org/docs/ProgrammersManual.html) is a key resource
   * someone once told me to just use a search engine to find the LLVM APIs and its a standard use case for me, e.g., I don't remember where the docs are I just search for `llvm irbuilder`
+
+
+
+[1]: https://gitlab.kitware.com/cmake/cmake/-/issues/20989
+[2]: https://cmake.org/cmake/help/latest/variable/CMAKE_APPLE_SILICON_PROCESSOR.html#variable:CMAKE_APPLE_SILICON_PROCESSOR
